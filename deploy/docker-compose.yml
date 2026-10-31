@@ -1,0 +1,15 @@
+services:
+  api:
+    image: ${IMAGE}
+    environment:
+      # Le bucket monté par gcsfuse sur la VM (/mnt/models) est vu dans le conteneur sous /models
+      MODEL_ROOT: /models
+      WHISPER_VERSION: ${WHISPER_VERSION:-v1}
+      TTS_VERSION: ${TTS_VERSION:-v1}
+    volumes:
+      - /mnt/models:/models:ro
+    ports:
+      - "8000:8000"
+    restart: always
+    logging:
+      driver: gcplogs   # logs envoyés dans Cloud Logging (rôle Logs Writer de vm-sa)

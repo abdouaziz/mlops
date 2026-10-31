@@ -1,0 +1,44 @@
+[project]
+name = "mlops"
+version = "0.1.0"
+description = "API Whisper + VITS wolof sur GCP"
+readme = "README.md"
+authors = [
+    { name = "abdouaziz", email = "abdouaziz@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "coqui-tts[codec]>=0.28.0",
+    "fastapi>=0.162.0",
+    "huggingface-hub>=2.4.0",
+    "python-multipart>=0.0.33",
+    "scipy>=1.18.1",
+    "torch>=2.15.0",
+    "torchaudio>=2.11.1",
+    "transformers>=5.22.1",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.4,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "app"
+
+# torch en version CPU (environ 200 Mo au lieu de 2 Go pour la version GPU)
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torchaudio = { index = "pytorch-cpu" }
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.2.0",
+    "ruff>=0.17.3",
+]
